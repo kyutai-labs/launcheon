@@ -89,22 +89,21 @@ class ArgparseParserFormat(ParserFormat):
         )
 
     def dry_run(self, cmd: str) -> str | None:
-        try:
-            exit_code = subprocess.run(
-                f"{cmd} --help",
-                shell=True,
-                check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+        """Returns None on success, or the error string on failure."""
+        result = subprocess.run(
+            f"{cmd} --help",
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if result.returncode != 0:
+            return (
+                result.stderr
+                or result.stdout
+                or f"Command '{cmd} --help' failed with exit code {result.returncode}"
             )
-            if exit_code.returncode != 0:
-                raise RuntimeError(
-                    f"Command '{cmd} --help' failed with exit code {exit_code.returncode}"
-                )
-        except subprocess.CalledProcessError as e:
-            raise RuntimeError(
-                f"Command '{cmd} --help' failed with exit code {e.returncode}"
-            ) from e
+        return None
 
 
 @dataclass(frozen=True)

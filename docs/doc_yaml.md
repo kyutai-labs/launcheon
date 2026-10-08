@@ -37,6 +37,9 @@ config:
   # the string is preceded by "! "
   # see https://github.com/yaml/pyyaml/issues/457#issuecomment-1030658939
   log_dir: ! "/home/${USER}/launcheon_test/"
+  # Use shorter experiment names (nicknames and kwargs groups are not expanded, e.g. `arch=3b`)
+  expand_kwargs_in_name: false
+  expand_groups_in_name: false
   # (Optional) If given, `base_cmd` will be wrapped with a call
   # to micromamba run for this environment
   micromamba_env: "snake_env"

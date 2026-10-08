@@ -1,6 +1,6 @@
 # Cluster-specific options such as resources *per experiment*
 # Here, each experiment in the grid uses 2 GPUs on a single node,
-# and a total of 8 * 2 = 6 CPUs
+# and a total of 8 * 2 = 16 CPUs
 cluster: 
   type: slurm
   num_gpus: 2
@@ -22,6 +22,9 @@ config:
   # their log directory using a unique shortened hash names. Otherwise, the log dirs
   # will default to the exp name, including all unique kwargs
   use_hash_in_dirnames: false
+  # Use shorter experiment names (nicknames and kwargs groups are not expanded, e.g. `arch=3b`)
+  expand_kwargs_in_name: false
+  expand_groups_in_name: false
   # Base command to run, shared by all experiments
   base_cmd: "python my_little_script.py"
   micromamba_env: "my_little_env"
@@ -53,9 +56,8 @@ sweep:
     # a boolean value
     # Advanced feature: Launcheon secret keys
     # These will be resolved on-the-fly at experiment's creation
-    # Because it is given as a singleton list, seed will be integrated in the experiment's name
-    # in contrast, port, tb_dir and output dir will not be added to the name
-    main_logs_dir: "{{launcheon.exp.log_dir}}"   # launcheon.exp.log_dir will itself expand to /config.log_dir/exp.name
+    # tb_dir and out_dir will not be added to the name
+    out_dir: "{{launcheon.exp.log_dir}}"   # launcheon.exp.log_dir will itself expand to /config.log_dir/exp.name
     tb_dir: "{{launcheon.exp.log_dir}}/tb_dir"
     # Advanced feature: Kwargs groups
     # the experiment naming will use the format "arch=3b" but the actual kwargs in the nested dict

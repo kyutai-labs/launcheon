@@ -14,9 +14,9 @@ launcheon my_little_launcheon_config.yml [command]
 
 
 **Table of contents:**
-  * [Submitting on the cluster](#📡-cluster-submission)
-  * [Monitoring experiments](#🔬-monitoring)
-  * [Chainable commands (selecting, filtering, etc.)](#🔗-selecting)
+  * [Submitting on the cluster](#-cluster-submission)
+  * [Monitoring experiments](#-monitoring)
+  * [Chainable commands (selecting, filtering, etc.)](#-selecting)
   * Cluster-specific commands
     * [SLURM](#slurm-commands)
 
@@ -61,7 +61,7 @@ launcheon my_little_launcheon_config.yml [command]
 
   * ``monitor [n = -1] --refresh [sleep = 30]``: The live-updated counterpart of `print log`. Displays a table with the first (`n > 0`) or last (`n < 0`) of the experiments' log file, and refreshing every `sleep` seconds.
 
-  * ``tensorboard --port [default = 8897]``. Launches a tensorboard instance on the given port monitoring the log directories of all the experiment in the grid.
+  * ``tensorboard --port [default = 8897]``. Launches a tensorboard instance on the given port monitoring the log directories of all the experiment in the grid. Use `--bind_all` to expose it on all network interfaces (localhost only by default).
 
   * ``table``. Pretty-prints a table summary of the experiment grid
     * ``--muted``: Removes colors 
@@ -70,10 +70,10 @@ launcheon my_little_launcheon_config.yml [command]
 #### Example
 
 ```bash
-python examples/python_api_usage.py filter weight_decay ">" 0 table --short
-````
+python examples/01_simple_grid/python_api_usage.py filter weight_decay ">" 0 table --short
+```
 
-![Example output of the table command](assets/table_example.png)
+![Example output of the table command](table_example.png)
 
 
 
@@ -94,7 +94,7 @@ These commands are *chainable*, i.e. they can precede any other command to selec
     * ``select i,j-k:s,..``: Select experiments based on their indices. Each element in the comma-separated list can either be:
       * the index `i` of the experiment to select
       * a range of indices with the format `j-k`, which select all indices from `j` to `k` (*inclusive*)
-      * a sub-range of indices with the format `j-k:s`, which select all indices from `j` to `k` (*inclusive*) with a step of `p`
+      * a sub-range of indices with the format `j-k:s`, which select all indices from `j` to `k` (*inclusive*) with a step of `s`
     * ``select [done|running|pending|cancelled|unscheduled|failed]`: Selects all experiments whose corresponding cluster job matches the requested status
     * ``select active``: Selects all experiment which are currently running or have succesfully completed
     * ``select error``: Selects all experiments which have failed or have been cancelled

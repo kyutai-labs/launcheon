@@ -6,7 +6,7 @@
  
  ``launcheon`` - A simple and customisable manager for experiments with a focus on results visualization. Launcheon automatically generates CLI commands to run based on *(i)* an experiment sweep defined either as a Python object or a YAML file and *(ii)* a chosen backend for job submissions (e.g. SLURM cluster, or simple bash commands run on a local machine). 
 
-  * [Installation](#🐣-installation)
+  * [Installation](#-installation)
   * [Quickstart](examples/01_simple_grid/README.md)
   * Defining a simple experiment sweep:
     * [Using a YAML configuration file](docs/doc_yaml.md)

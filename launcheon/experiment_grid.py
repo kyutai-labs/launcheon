@@ -937,10 +937,10 @@ class ExperimentGrid:
                     f"Cloning repo {self.git_repo} at {self.git_branch}:{self.git_commit}..."
                 )
                 # Checkout the requested commit; if it is not part of the shallow clone,
-                # try to fetch it directly. Any failure aborts the git sync
+                # fetch the full history. Any failure aborts the git sync
                 checkout_cmd = (
                     f"{{ git -c advice.detachedHead=false checkout --quiet {q_commit} 2>/dev/null"
-                    f" || {{ git fetch --quiet --depth=1 origin {q_commit}"
+                    " || { git fetch --quiet --unshallow origin"
                     f" && git -c advice.detachedHead=false checkout --quiet {q_commit}; }}"
                     ' || { echo "Error: could not checkout the requested git commit" >&2; exit 1; }; }; '
                 )

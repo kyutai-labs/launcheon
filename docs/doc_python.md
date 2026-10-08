@@ -30,23 +30,24 @@ A **sweep dictionary** defines the set of experiments contained in the experimen
         "7b": {"ckpt_dir": "7b", "bs": 256, "width": 4096, "num_layers": 24},
     },
     ```
-    Note that experiment naming will not expand the kwargs groups to keep concise names: for isntance, in that case, the corresponding experiments' name will include `_arch=2b` instead of e.g. `_ckpt_dir=3b_bs=1024_num_layers=12`.
+    Note that to keep concise names, you can set `expand_groups_in_name=False` so that experiment naming does not expand the kwargs groups: for isntance, in that case, the corresponding experiments' name will include `_arch=3b` instead of e.g. `_ckpt_dir=3b_bs=1024_num_layers=12`.
   * **flag_name** $\mapsto$ a **tuple**: A fixed value for parameter which accepts a sequence of values (e.g. `append` action in `argparse`, or `multiple=True` in `click`) `flag_name`.
-  * **flag_name** $\mapsto$ **anything else**: `flag_name` is a fixed parameter (same value across all experiments). It also won't be used when generating the unique name of the experiment.
+  * **flag_name** $\mapsto$ **anything else**: `flag_name` is a fixed parameter (same value across all experiments). It also won't be used when generating the unique name of the experiment if `expand_kwargs_in_name=False`.
 
 
 ## kwargs nicknames
 Some flag names or value might be very long which can be cumbersome. To alleviate this, we can also define a dictionary **kwargs_nicknames** which maps *a nickname* for a kwarg name **or** value to the true name of this kwarg name/value, which will only be expanded when generating the experiment's command. 
 
 #### Example
-In the following examples, both experiment grids are equivalent (they expand to the same experiment commands), but experiments in `grid2` will have significantly shorter names.
+In the following examples, both experiment grids are equivalent (they expand to the same experiment commands), but experiments in `grid2` will have significantly shorter names (with `expand_kwargs_in_name=False`).
 
 ```python
-grid1 = SlurmExperimentGrid(sweep={"checkpoint_directory": ["/very/long/path/1", "/very/long/path/2"]})
+grid1 = SlurmExperimentGrid(checkpoint_directory=["/very/long/path/1", "/very/long/path/2"])
 
 
 grid2 = SlurmExperimentGrid(
-        sweep={"ckpt": ["dir1", "dir2"]},
+        ckpt=["dir1", "dir2"],
+        expand_kwargs_in_name=False,
         kwargs_nicknames={
             "ckpt": "checkpoint_directory",
             "dir1": "/very/long/path/1",
@@ -64,7 +65,7 @@ to special "secret keys" in the sweep values of your experiment. There are curre
   * `"{{launcheon.exp.port}}"` will resolve to a unique random port generated for this experiment. This can be further customized with arguments `exp_port_min` and `exp_port_max` when instantiating the experiment grid.
 
 
-**Note:** Currently, secret keys are only supported as values inside the sweep, not in `kwargs_nicknames` nor in the base command.
+**Note:** Currently, secret keys are only supported as values inside the sweep, not in `kwargs_nicknames`.
 
 ## Initializing the experiment grid
 
@@ -128,7 +129,7 @@ class CustomExperimentGrid(SlurmExperimentGrid):
         for exp in self:
             table.add_row(
                 str(exp.idx),
-                str(exp.get_kwarg_or_group_value(show_kwarg)),
+                str(exp.get_value_from_anyquery(show_kwarg)),
             )
         Console().print(table)
 

@@ -6,7 +6,7 @@ A simple example of using `launcheon` via the Python API is given in `examples/0
 
 Alternatively, the experiment grid can also be configured via a YAML file. The counterpart YAML example is located in `examples/01_simple_grid/yaml_api_usage.yml` and the corresponding experiment grid CLI can be started with the `launcheon` command.
 
-Below you can find example of useful commands for both APIs. A list of all available commands is given [here](docs/doc_cli.md).
+Below you can find example of useful commands for both APIs. A list of all available commands is given [here](../../docs/doc_cli.md).
 
 
 
@@ -15,7 +15,7 @@ Below you can find example of useful commands for both APIs. A list of all avail
 | --- | ---------- | -------- |
 | Pros | Can add custom methods + can re-use/share configs across experiment grids |  Simple and structured. Easier to share  |
 | Cons | More prone to syntax errors (dictionary formatting) | More rigid format |
-| Example | [`examples/01_simple_grid/python_api_usage.py`](examples/01_simple_grid/python_api_usage.py) | [`examples/01_simple_grid/yaml_api_usage.yml`](examples/01_simple_grid/yaml_api_usage.yml) |
+| Example | [`examples/01_simple_grid/python_api_usage.py`](python_api_usage.py) | [`examples/01_simple_grid/yaml_api_usage.yml`](yaml_api_usage.yml) |
 | Command | `python python_api_usage.py ....` | `launcheon yaml_api_usage.yml ...`|
 
 

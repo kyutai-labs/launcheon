@@ -654,7 +654,7 @@ class SlurmExperimentGrid(ExperimentGrid):
         # job array log file they correspond to
         if self.as_slurm_array:
             for exp in self:
-                if os.path.exists(exp.log_file):
+                if os.path.islink(exp.log_file):
                     try:
                         target_slurm_logfile = read_relative_symlink(exp.log_file)
                         if os.path.abspath(target_slurm_logfile) != os.path.abspath(
@@ -728,6 +728,7 @@ class SlurmExperimentGrid(ExperimentGrid):
                         print(res.stderr.decode("utf-8", errors="replace").strip())
                         if not keep_slurm_script:
                             os.remove(slurm_script)
+                            os.rmdir(os.path.dirname(slurm_script))
                         # Nothing was submitted: do not register any job ID
                         continue
                     out = subprocess.check_output(
@@ -817,6 +818,8 @@ class SlurmExperimentGrid(ExperimentGrid):
         # clean up
         if not keep_slurm_script:
             os.remove(slurm_script)
+            if dry_run:
+                os.rmdir(os.path.dirname(slurm_script))
         else:
             rich.print(f"\nSlurm script for the job array written in [bold green]{slurm_script}[/]")
 

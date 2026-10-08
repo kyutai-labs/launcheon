@@ -102,6 +102,9 @@ if __name__ == "__main__":
         # their log directory using a unique shortened hash names. Otherwise, the log dirs
         # will default to the exp name, including all unique kwargs
         use_hash_in_dirnames=False,
+        # Use shorter experiment names (nicknames and kwargs groups are not expanded, e.g. `arch=3b`)
+        expand_kwargs_in_name=False,
+        expand_groups_in_name=False,
         micromamba_env=micromamba_env,
         num_nodes=num_nodes,
         num_gpus=num_gpus,

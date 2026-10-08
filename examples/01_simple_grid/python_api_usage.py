@@ -38,7 +38,7 @@ log_dir = f"/home/{os.environ.get('USER')}/launcheon_test"
 
 # Environment and resources options *per experiment*
 # Here, each experiment in the grid uses 2 GPUs on a single node,
-# and a total of 8 * 2 = 6 CPUs
+# and a total of 8 * 2 = 16 CPUs
 num_gpus = 2
 num_nodes = 1
 num_cpus_per_gpu = 8
@@ -74,8 +74,7 @@ sweep = dict(
     aug=["randaugment"],
     # Advanced feature: Launcheon secret keys
     # These will be resolved on-the-fly at experiment's creation
-    # Because it is given as a singleton list, seed will be integrated in the experiment's name
-    # in contrast, port, tb_dir and output dir will not be added to the name
+    # tb_dir and out_dir will not be added to the name
     out_dir="{{launcheon.exp.log_dir}}",
     tb_dir="{{launcheon.exp.log_dir}}/tb_dir",
     # Advanced feature: kwargs groups
@@ -116,6 +115,9 @@ if __name__ == "__main__":
         # their log directory using a unique shortened hash names. Otherwise, the log dirs
         # will default to the exp name, including all unique kwargs
         use_hash_in_dirnames=False,
+        # Use shorter experiment names (nicknames and kwargs groups are not expanded, e.g. `arch=3b`)
+        expand_kwargs_in_name=False,
+        expand_groups_in_name=False,
         # Set the environment
         micromamba_env=micromamba_env,
         num_nodes=num_nodes,
