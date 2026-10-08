@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "launcheon"
-version = "1.7.5"
+version = "1.0.0"
 description = "Simple and customizable experiment manager"
 authors = [
     { name = "Amelie Royer", email = "amelie@kyutai.org" }

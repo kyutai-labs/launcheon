@@ -495,7 +495,7 @@ class ExperimentGrid:
                 # this would expand all the kwargs groups and can be wuite length
                 exp_kwargs = dict(zip(keys, bundle))
                 exp_name = None
-                if not expand_groups_in_name:  # Old naming format (pre v1.7.0 version)
+                if not expand_groups_in_name:  # Legacy naming format (groups are not expanded)
                     exp_name = get_name_from_kwargs(exp_kwargs)
 
                 # expand/flatten kwargs groups into proper keyword arguments

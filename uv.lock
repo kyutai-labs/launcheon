@@ -43,7 +43,7 @@ wheels = [
 
 [[package]]
 name = "launcheon"
-version = "1.7.5"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "fire" },
