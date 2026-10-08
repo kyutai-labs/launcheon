@@ -1,0 +1,19 @@
+name: unittest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install launcheon package
+      uses: ./.github/actions/launcheon_build
+    - name: Run unit tests
+      run: |
+        uv run --frozen --group dev -m pytest tests

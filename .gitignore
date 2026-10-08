@@ -1,0 +1,9 @@
+.vscode*
+*.egg*
+__pycache__
+build/
+dist/
+.venv
+.pytest_cache
+.ruff_cache
+.mypy_cache

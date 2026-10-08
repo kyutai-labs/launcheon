@@ -1,0 +1,73 @@
+# Cluster-specific options such as resources *per experiment*
+# Here, each experiment in the grid uses 2 GPUs on a single node,
+# and a total of 8 * 2 = 6 CPUs
+cluster: 
+  type: slurm
+  num_gpus: 2
+  num_nodes: 1
+  num_cpus_per_gpu: 8
+  as_slurm_array: true
+
+# Global Experiment grid Settings
+config:
+  # Logging
+  base_name: "my_little_experiment"
+  # Base log directory for SLURM outputs
+  # the yaml parser can expand environment variables such as ${USER}, however,  
+  # for quoted strings, this resolved is only applied when the string is
+  # preceded by "! "
+  # https://github.com/yaml/pyyaml/issues/457#issuecomment-1030658939
+  log_dir: ! "/home/${USER}/launcheon_test/"
+  # If the experiment names are too long, you can set the following options to save
+  # their log directory using a unique shortened hash names. Otherwise, the log dirs
+  # will default to the exp name, including all unique kwargs
+  use_hash_in_dirnames: false
+  # Base command to run, shared by all experiments
+  base_cmd: "python my_little_script.py"
+  micromamba_env: "my_little_env"
+
+
+# Feature 1: Kwargs Nicknames
+# short nicknames for long arguments
+# Maps a nickname to the real string it should resolve to
+kwargs_nicknames:
+  bs: "batch_size"
+  7b: "/very/long/path/to/7b/model"
+  3b: "/very/long/path/to/3b/model"
+  aug: "data_augmentation"
+
+# Sweep
+sweep:
+    # simple grid search sweep
+    # note: weird naming of values in lr just to 100% match the Python 
+    # API example due to formatting of float -> str
+    lr: [0.001, 1e-05, 1e-07]
+    weight_decay: [0.1, 0.0]
+    # Singleton Arguments are given directly as a single value
+    # they won't be used in experiment naming so be careful when you change them
+    dataset: "imagenet"
+    clip_grad: true
+    # however, if given as a list of size, it will be used in experiment
+    # naming even though all experiments have the same value
+    aug: ["randaugment"]
+    # a boolean value
+    # Advanced feature: Launcheon secret keys
+    # These will be resolved on-the-fly at experiment's creation
+    # Because it is given as a singleton list, seed will be integrated in the experiment's name
+    # in contrast, port, tb_dir and output dir will not be added to the name
+    main_logs_dir: "{{launcheon.exp.log_dir}}"   # launcheon.exp.log_dir will itself expand to /config.log_dir/exp.name
+    tb_dir: "{{launcheon.exp.log_dir}}/tb_dir"
+    # Advanced feature: Kwargs groups
+    # the experiment naming will use the format "arch=3b" but the actual kwargs in the nested dict
+    # will be the ones used when generating the command
+    arch:
+      3b: 
+        ckpt_dir: "3b"
+        bs: 1024
+        width: 2048
+        num_layers: 12
+      7b:
+        ckpt_dir: "7b"
+        bs: 256
+        width: 4096
+        num_layers: 24

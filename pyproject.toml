@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "launcheon"
+version = "1.7.5"
+description = "Simple and customizable experiment manager"
+authors = [
+    { name = "Amelie Royer", email = "amelie@kyutai.org" }
+]
+maintainers = [{ name = "Amelie Royer", email = "amelie@kyutai.org" }]
+keywords = []
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "fire",
+    "pyyaml",
+    "rich",
+]
+
+[project.scripts]
+launcheon = "launcheon.yaml_parser:yaml_parser_entry_point"
+
+
+[project.optional-dependencies]
+plot = ["plotext"]
+
+[project.urls]
+Homepage = "https://github.com/kyutai-labs/launcheon"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["launcheon*"]
+
+
+# RUFF formatting
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+ignore = ["E731"]
+extend-select = ["I"]
+
+# PYRIGHT typing
+[tool.pyright]
+useLibraryCodeForTypes  = false
+reportTypedDictNotRequiredAccess = false
+reportMissingParameterType = true 
+
+
+[dependency-groups]
+plot = [
+    "plotext"
+]
+
+dev = [
+    "ruff==0.11.2",
+    "pytest",
+    "pyright"
+]
