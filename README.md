@@ -18,6 +18,18 @@
     * Automatically building table views of your experiment grid using the `table` command and expand this to include results and metrics
 
 
+## Quickstart
+Add the following line to your `pyproject.toml`'s dependencies when using `uv`
+```bash
+"launcheon @ git+ssh://git@github.com/kyutai-labs/launcheon"
+```
+
+or install via `pip`
+
+```
+pip install -U git+https://github.com/kyutai-labs/launcheon
+```
+
 ## 🐣 Installation
 
 #### As an external package (via git)
