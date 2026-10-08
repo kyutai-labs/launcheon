@@ -21,7 +21,11 @@
 ## Quickstart
 Add the following line to your `pyproject.toml`'s dependencies when using `uv`
 ```bash
+# latest version (nightly)
 "launcheon @ git+ssh://git@github.com/kyutai-labs/launcheon"
+
+# or freeze to a specific tag
+"launcheon @ git+ssh://git@github.com/kyutai-labs/launcheon@v1.0"
 ```
 
 or install via `pip`
